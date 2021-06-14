@@ -8,7 +8,7 @@ Installation
 ------------
 Using the acc-py Python package index datascout can be pip installed with::
 
-pip install datascout
+    pip install datascout
 
 Documentation contents
 ----------------------
