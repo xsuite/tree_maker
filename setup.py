@@ -37,7 +37,7 @@ setup(
     description="Sweet functions for dict from/to pandas, awkward, parquet data conversion.",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
-    url="",
+    url=" https://acc-py.web.cern.ch/gitlab/abpcomputing/sandbox/tree_maker/docs/stable/",
     packages=find_packages(),
     python_requires="~=3.7",
     classifiers=[
