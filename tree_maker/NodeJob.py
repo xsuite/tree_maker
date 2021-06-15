@@ -67,7 +67,13 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         with open(self.path+'/config.yaml', 'r') as file:
             cfg = ryaml.load(file)
         for ii in self.dictionary.keys():
-            cfg[ii]=self.dictionary[ii]
+            if not type(self.dictionary[ii])==dict:
+                # most of case
+                cfg[ii]=self.dictionary[ii]
+            else:
+                # proper partial merging between dict
+                # TODO: this works only for 1-depth dict
+                cfg[ii]={**cfg[ii], **self.dictionary[ii]}
     
         with open(self.path+'/config.yaml', 'w') as file:
             ryaml.dump(cfg, file)
