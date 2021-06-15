@@ -1,5 +1,5 @@
 """
-setup.py for datascout.
+setup.py for tree_maker.
 
 For reference see
 https://packaging.python.org/guides/distributing-packages-using-setuptools/
