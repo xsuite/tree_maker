@@ -9,5 +9,4 @@ transfer_input_files    = config.yaml, run.py
 # The line below can be commented it necessary
 #transfer_output_files   = output.yaml
 +JobFlavour  = "espresso"
-batch-name = "sum"
 queue
