@@ -6,6 +6,7 @@ import yaml        # pip install pyyaml
 from anytree import AnyNode
 from anytree.exporter import DictExporter
 from anytree.importer import DictImporter
+from pathlib import Path
 
 from anytree import AnyNode, NodeMixin, RenderTree
 class NodeJobBase(object):  # Just an example of a base class
@@ -40,7 +41,15 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     
     def run(self):
         subprocess.call(f'cd {self.path};{self.run_command}', shell=True)
-        
+    
+    
+    def clone(self):
+        if not self.template_path==None:
+            copytree(self.template_path, child.path)
+        else:
+            subprocess.call(f'mkdir {self.path}', shell=True)
+        self.to_yaml()
+    
     def clone_children(self):
         for child in self.children:
             copytree(child.template_path, child.path)
@@ -68,6 +77,8 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
             child.mutate()
     
     def to_yaml(self, filename='tree.yaml'): 
+        if not Path(self.path).is_dir():
+            subprocess.call(f'mkdir {self.path}', shell=True)
         with open(f"{self.path}/{filename}", "w") as file:  
             yaml.dump(DictExporter().export(self), file)
    
@@ -75,6 +86,3 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         return [ii for ii in anytree.search.findall(self, 
                 filter_=lambda node: node.depth==number)]
 
-def from_yaml(filename='tree.yaml'): 
-        with open("tree.yaml", "r") as file:
-            return DictImporter(nodecls=NodeJob).import_(yaml.load(file, Loader=yaml.FullLoader))

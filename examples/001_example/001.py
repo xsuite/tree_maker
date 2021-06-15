@@ -31,14 +31,14 @@ my_list_original=sorted(my_list_original)
 #root
 root = NodeJob(name='root', parent=None)
 # to be modified accordingly
-root.path = '/home/jovyan/local_host_home/CERNBox/2021/tree_maker/examples/001_example'
+root.path = '/home/jovyan/local_host_home/CERNBox/2021/tree_maker/examples/001_example/study_000'
 
 #first generation
 for node in root.leaves:
     node.children=[NodeJob(name=f"{child:03}",
                            parent=node,
                            path = f"{node.path}/{child:03}",
-                           template_path = root.path+'/templates/sum_it',
+                           template_path = root.path+'/../templates/sum_it',
                            run_command = f'python run.py',
                            dictionary={'a':float(a[child]), 
                                        'b':float(b[child])})
@@ -49,7 +49,7 @@ for node in root.leaves:
     node.children=[NodeJob(name=f"{child:03}",
                            parent=node,
                            path = f"{node.path}/{child:03}",
-                           template_path = root.path+'/templates/multiply_it',
+                           template_path = root.path+'/../templates/multiply_it',
                            run_command = f'python run.py',
                            dictionary={'c':float(c[child])})
                    for child in range(len(c))]
@@ -59,10 +59,12 @@ for node in root.leaves:
     node.children=[NodeJob(name=f"{child:03}",
                            parent=node, 
                            path = f"{node.path}/{child:03}",
-                           template_path = root.path+'/templates/square_root_it',
+                           template_path = root.path+'/../templates/square_root_it',
                            run_command = f'python run.py',
                            dictionary={'a':float(c[child])})
                            for child in range(1)]
+    
+root.to_yaml()
 
 # %%
 if False:
@@ -79,12 +81,15 @@ root.print_it()
 root.to_yaml()
 
 # %%
+root.path
+
+# %%
 # Load the tree from a yaml
-root=tree_maker.tree_from_yaml('./node.yaml')
+root=tree_maker.tree_from_yaml(f'{root.path}/tree.yaml')
 root.print_it()
 
 # %%
-root.children[0].run_command
+root.children[3].children[1].children[0].run_command
 
 # %%
 # STEP 1 cloning
