@@ -4,8 +4,8 @@ import datetime
 
 
 project = "tree_maker"
-author = "Davide Gamba"
-version = datascout.__version__
+author = "Hamish Graham"
+version = tree_maker.__version__
 
 copyright = "{0}, CERN".format(datetime.datetime.now().year)
 
