@@ -27,8 +27,9 @@ for pre, _, node in RenderTree(root, style=anytree.render.ContRoundStyle()):
     print(f"{pre}{node.name}")
 
 # %%
-from anytree.exporter import DotExporter
-DotExporter(root).to_picture('tree.png')
+# we are commenting it to allow you to use it on /afs
+#from anytree.exporter import DotExporter
+#DotExporter(root).to_picture('tree.png')
 
 # %%
 # Concept of children of a node
