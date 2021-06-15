@@ -15,7 +15,7 @@ class NodeJobBase(object):  # Just an example of a base class
             return self.name
 
 class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
-    def __init__(self, parent=None, children=None, name= None, parent_path=None,
+    def __init__(self, parent=None, children=None, name= None,
                  path=None,
                  template_path=None, dictionary = None):
         super(NodeJobBase, self).__init__()
@@ -23,7 +23,6 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         self.parent = parent
         self.path = path
         self.template_path = template_path
-        self.parent_path = parent_path
         self.dictionary= dictionary
         
         if children:  # set children only if given
