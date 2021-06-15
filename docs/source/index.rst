@@ -1,8 +1,8 @@
-datascout
+tree_maker
 =========
 Introduction
 ------------
-SHORT DESCRIPTION OF THE PROJECT
+Tree_maker allows bunches to be run simultaneously.
 
 Installation
 ------------
