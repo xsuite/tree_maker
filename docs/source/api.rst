@@ -1,3 +1,3 @@
-datascout API documentation
+tree_maker API documentation
 ---------------------------
 Modules
