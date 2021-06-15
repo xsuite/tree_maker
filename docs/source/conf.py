@@ -1,11 +1,11 @@
 import datetime
 
-import datascout
+import tree_maker # (this is probably wrong)
 
 
-project = "datascout"
-author = "Davide Gamba"
-version = datascout.__version__
+project = "tree_maker"
+author = "Hamish Graham"
+version = tree_maker.__version__
 
 copyright = "{0}, CERN".format(datetime.datetime.now().year)
 

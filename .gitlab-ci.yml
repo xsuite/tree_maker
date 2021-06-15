@@ -5,7 +5,7 @@ include:
    file: acc_py_devtools/templates/gitlab-ci/python.yml
 
 variables:
-  project_name: datascout
+  project_name: tree_maker
   PY_VERSION: '3.7'
 
 

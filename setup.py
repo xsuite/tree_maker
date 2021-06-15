@@ -1,5 +1,5 @@
 """
-setup.py for datascout.
+setup.py for tree_maker.
 
 For reference see
 https://packaging.python.org/guides/distributing-packages-using-setuptools/
@@ -15,7 +15,7 @@ with (HERE / "README.md").open("rt") as fh:
 
 
 REQUIREMENTS: dict = {
-    "core": ["numpy", "scipy", "pandas", "pyarrow", "awkward", "datetime", "pathlib"],
+    "core": ["anytree", "pyyaml", "ruamel.yaml"],
     "test": [
         "pytest",
     ],
@@ -30,11 +30,11 @@ REQUIREMENTS: dict = {
 
 
 setup(
-    name="datascout",
-    version="0.0.2",
-    author="Davide Gamba",
-    author_email="davide.gamba@cern.ch",
-    description="Sweet functions for dict from/to pandas, awkward, parquet data conversion.",
+    name="tree_maker",
+    version="0.0.1",
+    author="Hamish Graham",
+    author_email="hamish.graham@cern.ch",
+    description="Making a tree.",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     url="",

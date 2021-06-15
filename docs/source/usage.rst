@@ -9,18 +9,15 @@ An example:
 
 .. testcode::
 
-    import datascout
-    print(datascout.__name__)
+    import tree_maker
 
 .. testoutput::
 
-    datascout
+    tree_maker
 
 
 Another example:
 
 .. doctest::
 
-    >>> import datascout
-    >>> datascout.__name__
-    'datascout'
+    >>> import tree_maker
