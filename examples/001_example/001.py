@@ -41,7 +41,9 @@ for node in root.leaves:
                            template_path = root.path+'/../templates/sum_it',
                            run_command = f'python run.py',
                            dictionary={'a':float(a[child]), 
-                                       'b':float(b[child])})
+                                       'b':float(b[child]),
+                                       'log_file': f"{node.path}/{child:03}/log.yaml"
+                                      })
                    for child in range(len(a))]
 
 #second generation
@@ -51,7 +53,9 @@ for node in root.leaves:
                            path = f"{node.path}/{child:03}",
                            template_path = root.path+'/../templates/multiply_it',
                            run_command = f'python run.py',
-                           dictionary={'c':float(c[child])})
+                           dictionary={'c':float(c[child]),
+                                       'log_file': f"{node.path}/{child:03}/log.yaml",
+                                      })
                    for child in range(len(c))]
     
 #third generation
@@ -61,7 +65,10 @@ for node in root.leaves:
                            path = f"{node.path}/{child:03}",
                            template_path = root.path+'/../templates/square_root_it',
                            run_command = f'python run.py',
-                           dictionary={'a':float(c[child])})
+                           dictionary={'a':float(c[child]),
+                                       'log_file': f"{node.path}/{child:03}/log.yaml",
+                                       'test': {'guido':4}
+                                      })
                            for child in range(1)]
     
 root.to_yaml()
