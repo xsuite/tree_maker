@@ -37,13 +37,17 @@ This package is intended to create the corresponding folders of the "generations
 ## Contributors
 
 Philippe Belanger
-
 Gianni Iadarola
-
 Sofia Kostoglou
-
 Hamish Graham
-
 Guido Sterbini
-
 Frederik Van Der Veken
+
+## Getting started
+
+First you need to install this package in your (virtual) environment. Presently, the suggested way is to go for local folder installation:
+```
+git clone https://gitlab.cern.ch/abpcomputing/sandbox/tree_maker.git tree_maker
+cd tree_maker
+python -m pip install -e .
+```

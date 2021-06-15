@@ -32,9 +32,9 @@ REQUIREMENTS: dict = {
 setup(
     name="tree_maker",
     version="0.0.1",
-    author="Hamish Graham",
-    author_email="hamish.graham@cern.ch",
-    description="Making a tree.",
+    author="Hamish Graham, Guido Sterbini",
+    author_email="guido.sterbini@cern.ch",
+    description="Using a tree topology to organize simulations.",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     url="",
