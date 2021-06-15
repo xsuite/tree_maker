@@ -51,3 +51,8 @@ git clone https://gitlab.cern.ch/abpcomputing/sandbox/tree_maker.git tree_maker
 cd tree_maker
 python -m pip install -e .
 ```
+
+On lxplus you can source a pre-cooked distribution
+```
+source /afs/cern.ch/eng/tracking-tools/python_installations/activate_default_python
+```
