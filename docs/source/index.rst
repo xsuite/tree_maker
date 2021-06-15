@@ -2,7 +2,7 @@ tree_maker
 =========
 Introduction
 ------------
-Tree_maker allows bunches to be run simultaneously.
+Tree_maker allows the use of a tree topology to organize simulations.
 
 Installation
 ------------
