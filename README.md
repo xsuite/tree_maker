@@ -34,3 +34,16 @@ The `tree` information is a "map" (e.g., a dictionary, a yaml file, a pandas dat
 
 This package is intended to create the corresponding folders of the "generations" of the BP's study. The goal is to ease the BP's activity **but** maintain him in close contact with the "parent" job (see above, **the BP should harness it**) and offer an adequate flexibility.
 
+## Contributors
+
+Philippe Belanger
+
+Gianni Iadarola
+
+Sofia Kostoglou
+
+Hamish Graham
+
+Guido Sterbini
+
+Frederik Van Der Veken
