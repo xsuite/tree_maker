@@ -1,5 +1,5 @@
 import anytree    # pip install anytree 
-import os          
+import subprocess         
 from shutil import copytree
 import ruamel.yaml # pip install ruamel.yaml 
 import yaml        # pip install pyyaml 
@@ -17,23 +17,29 @@ class NodeJobBase(object):  # Just an example of a base class
 class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     def __init__(self, parent=None, children=None, name= None,
                  path=None,
-                 template_path=None, dictionary = None):
+                 template_path=None, 
+                 run_command=None,
+                 dictionary = None):
         super(NodeJobBase, self).__init__()
         self.name = name
         self.parent = parent
         self.path = path
         self.template_path = template_path
+        self.run_command = run_command
         self.dictionary= dictionary
         
         if children:  # set children only if given
             self.children = children
     
     def print_it(self):
+        '''
+        An easy way to print the tree.
+        '''
         for pre, _, node in RenderTree(self, style=anytree.render.ContRoundStyle()):
             print(f"{pre}{node.name}")
     
     def run(self):
-        os.system(f'cd {self.path}; python run.py;')
+        subprocess.call(f'cd {self.path};{self.run_command}', shell=True)
         
     def clone_children(self):
         for child in self.children:
@@ -42,7 +48,8 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     
     def rm_children(self,):
         for child in self.children:
-            os.system(f'rm -rf {child.path}')
+            # https://stackoverflow.com/questions/31977833/rm-all-files-under-a-directory-using-python-subprocess-call
+            subprocess.call(f'rm -rf {child.path}', shell=True)
                         
     def mutate(self):
         #https://stackoverflow.com/questions/7255885/save-dump-a-yaml-file-with-comments-in-pyyaml
