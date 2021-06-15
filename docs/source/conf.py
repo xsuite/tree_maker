@@ -1,9 +1,9 @@
 import datetime
 
-import datascout
+#should I import Nodejob, __init__ and general? 
 
 
-project = "datascout"
+project = "tree_maker"
 author = "Davide Gamba"
 version = datascout.__version__
 
