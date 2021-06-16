@@ -16,6 +16,7 @@ copyright = "{0}, CERN".format(datetime.datetime.now().year)
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "m2r2"
     "acc_py_sphinx.theme",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
