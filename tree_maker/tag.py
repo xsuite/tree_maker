@@ -87,6 +87,7 @@ def tag_it(myfile, mycomment):
     Examples
     --------
     >>> tag_it('myfile', 'hello')
+
     This will create a a human readable and a unix time stamp and append that to 'myfile', 
     including the comment 'hello'
     """     
@@ -107,7 +108,7 @@ def tag_first(myfile, mycomment):
 
     Examples
     --------
-    >>> tag_it('myfile', 'hello')
+    >>> tag_first('myfile', 'hello')
 
     If 'my_file' already exits, it will overwrite that file and create a first timestamp.
     """
