@@ -4,11 +4,6 @@ Introduction
 ------------
 Tree_maker allows the use of a tree topology to organize simulations.
 
-Readme File2
-============
-
-.. mdinclude:: ../../README.md
-
 Installation
 ------------
 Using the acc-py Python package index datascout can be pip installed with::
