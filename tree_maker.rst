@@ -69,6 +69,8 @@ First you need to install this package in your (virtual) environment. Presently,
 
 
 On lxplus you can source a pre-cooked distribution
-```
-source /afs/cern.ch/eng/tracking-tools/python_installations/activate_default_python
-```
+
+.. code-block:: bash
+
+    source /afs/cern.ch/eng/tracking-tools/python_installations/activate_default_python
+
