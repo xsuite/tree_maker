@@ -62,6 +62,7 @@ Getting started
 First you need to install this package in your (virtual) environment. Presently, the suggested way is to go for local folder installation:
 
 .. code-block:: bash
+
     git clone https://gitlab.cern.ch/abpcomputing/sandbox/tree_maker.git tree_maker
     cd tree_maker
     python -m pip install -e .
