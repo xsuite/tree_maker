@@ -28,10 +28,10 @@ Each jobs can be "parent" of other jobs thus propagating a second generation.
 The jobs can be run in parallel, locally or remotely.
 
 There are different phases:
-* define the template job.
-* apply a cloning
-* apply one or more mutations
-* running the job.
+# define the template job.
+# apply a cloning
+# apply one or more mutations
+# running the job.
 
 The `tree` information is a "map" (e.g., a dictionary, a yaml file, a pandas dataframe) we use to define to describe the parent folder, children folders and mutations.
 
