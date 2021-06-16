@@ -4,7 +4,10 @@ Introduction
 ------------
 Tree_maker allows the use of a tree topology to organize simulations.
 
-.. autofunction:: README
+Readme File
+===========
+
+.. mdinclude:: ../../../README.md
 
 Installation
 ------------
