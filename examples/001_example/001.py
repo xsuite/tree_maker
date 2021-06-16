@@ -32,6 +32,8 @@ my_list_original=sorted(my_list_original)
 root = NodeJob(name='root', parent=None)
 # to be modified accordingly
 root.path = '/home/jovyan/local_host_home/CERNBox/2021/tree_maker/examples/001_example/study_000'
+root.dictionary = {'log_file': f"{root.path}/log.yaml"}
+root.clean_log()
 
 #first generation
 for node in root.leaves:
@@ -100,36 +102,55 @@ root.children[3].children[1].children[0].run_command
 
 # %%
 # STEP 1 cloning
+root.tag_it('starting cloning')
+
 root.rm_children()
 [x.clone_children() for x in root.generation(0)]
 [x.clone_children() for x in root.generation(1)]
-[x.clone_children() for x in root.generation(2)];
+[x.clone_children() for x in root.generation(2)]
+
+root.tag_it('cloned')
 
 # %%
-
-#def run_HTCondor(self):
-#    import subprocess
-#    print('Launching on HTCondor')
-#    subprocess.run(f'cd {self.path}; condor_submit run.sub;')
-#NodeJob.run_HTCondor=run_HTCondor
-
+root.tag_it('launched')
 for node in root.generation(1):
+    node.clean_log()
+    
+    node.tag_it('Before mutation')
     node.mutate()
+    node.tag_it('After mutation')
+    
+    node.tag_it('Before submission')
     node.run()
+    node.tag_it('After submission')
 
 # %%
 for node in root.generation(2):
+    node.clean_log()
+
+    node.tag_it('Before mutation')
     parent_output = tree_maker.from_yaml(node.parent.path+'/output.yaml')
     node.dictionary['sum_a_b']=parent_output['result']
     node.mutate()
+    node.tag_it('After mutation')
+
+    node.tag_it('Before submission')
     node.run()
+    node.tag_it('After submission')
 
 # %%
 for node in root.generation(3):
+    node.clean_log()
+
+    node.tag_it('Before mutation')
     parent_output = tree_maker.from_yaml(node.parent.path+'/output.yaml')
     node.dictionary['a']=parent_output['result']
     node.mutate()
+    node.tag_it('After mutation')
+
+    node.tag_it('Before submission')
     node.run()
+    node.tag_it('After submission')
 
 # %%
 my_list=[]
@@ -141,3 +162,27 @@ for node in root.generation(3):
 assert any(np.array(sorted(my_list))-np.array(my_list_original))==0
 
 # %%
+root=tree_maker.tree_from_yaml(f'/home/jovyan/local_host_home/CERNBox/2021/tree_maker/examples/001_example/study_000/tree.yaml')
+
+# %%
+for child in root.generation(2):
+    if child.is_tag('started'):
+        print(child.path)
+
+# %%
+for child in root.generation(3):
+    if child.is_tag('completed'):
+        print(child.path)
+
+# %%
+if any([descendant.is_tag('completed') for descendant in root.descendants]):
+    root.tag_it('completed')
+
+# %%
+
+#def run_HTCondor(self):
+#    import subprocess
+#    print('Launching on HTCondor')
+#    subprocess.run(f'cd {self.path}; condor_submit run.sub;')
+#NodeJob.run_HTCondor=run_HTCondor
+

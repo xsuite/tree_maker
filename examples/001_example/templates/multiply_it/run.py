@@ -7,6 +7,10 @@ import tree_maker
 with open('config.yaml', 'r') as file:
     yaml = ruamel.yaml.YAML()
     cfg = yaml.load(file)
+    
+with open(cfg['parent']+'/output.yaml', 'r') as file:
+    yaml = ruamel.yaml.YAML()
+    parent_out = yaml.load(file)
 
 tree_maker.tag.tag_it(cfg['log_file'], 'started')
     
@@ -16,7 +20,7 @@ def my_function(my_x, my_y):
     return my_x*my_y
 
 # run the code
-result = my_function(cfg['sum_a_b'], cfg['c'])
+result = my_function(parent_out['result'], cfg['c'])
 
 with open('output.yaml', 'w') as fp:
     yaml = ruamel.yaml.YAML()

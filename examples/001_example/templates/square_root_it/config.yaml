@@ -1,5 +1,5 @@
 # This is my input
-a: 4.233    # this has to be sqrt'ed
+parent: '../multiply_it'    # this has to be sqrt'ed
 log_file: './log.yaml'
 test:
-    hamish: 2
+    this is a smart test: 2

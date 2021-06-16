@@ -15,7 +15,7 @@ with (HERE / "README.md").open("rt") as fh:
 
 
 REQUIREMENTS: dict = {
-    "core": ["anytree", "pyyaml", "ruamel.yaml", "pathlib"],
+    "core": ["anytree", "pyyaml", "ruamel.yaml", "pathlib", "pandas"],
     "test": [
         "pytest",
     ],
