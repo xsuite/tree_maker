@@ -7,6 +7,7 @@ import datetime
 def read_yaml(myfile, verbose=False):
     """
     read_yaml is to read a yaml file and convert it into python.
+
     Example
     --------
     >>> read_yaml('mytest.yml')
@@ -48,6 +49,7 @@ def write_yaml(my_dict, myfile):
 def append_yaml(my_dict, myfile):
     '''
     append_yaml is to append dictionaries to a yaml file.
+    
     Examples
     --------
     >>> append_yaml({'blue': 'bonjour'}, ('mytest2.yml'))
@@ -87,6 +89,7 @@ def tag_it(myfile, mycomment):
     Examples
     --------
     >>> tag_it('myfile', 'hello')
+
     This will create a a human readable and a unix time stamp and append that to 'myfile', 
     including the comment 'hello'
     """     
@@ -107,7 +110,7 @@ def tag_first(myfile, mycomment):
 
     Examples
     --------
-    >>> tag_it('myfile', 'hello')
+    >>> tag_first('myfile', 'hello')
 
     If 'my_file' already exits, it will overwrite that file and create a first timestamp.
     """

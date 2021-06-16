@@ -25,6 +25,7 @@ REQUIREMENTS: dict = {
     "doc": [
         "sphinx",
         "acc-py-sphinx",
+        "m2r2"
     ],
 }
 
