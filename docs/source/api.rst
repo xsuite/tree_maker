@@ -1,4 +1,4 @@
 tree_maker API documentation
 ---------------------------
 
-.. autofunction:: tools.tag_first
+.. autofunction:: tag.tag_first
