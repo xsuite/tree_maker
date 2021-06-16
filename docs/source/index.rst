@@ -2,9 +2,9 @@ tree_maker
 =========
 Introduction
 ------------
-Tree_maker allows the use of a tree topology to organize simulations hi.
+Tree_maker allows the use of a tree topology to organize simulations.
 
-README
+.. autofunction:: README
 
 Installation
 ------------
