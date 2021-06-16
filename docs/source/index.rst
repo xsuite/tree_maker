@@ -29,7 +29,7 @@ Documentation contents
     :caption: Reference docs
     :maxdepth: 1
 
-    README <readme_link>
+    readme_link
     api
     genindex
 
