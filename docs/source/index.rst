@@ -1,9 +1,6 @@
 tree_maker
 =========
 
-README
-------
-
 .. mdinclude:: ../../README.md
 
 Installation
