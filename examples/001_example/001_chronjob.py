@@ -22,7 +22,7 @@ from tree_maker import NodeJob
 try:
     root=tree_maker.tree_from_yaml(
     f'/home/jovyan/local_host_home/CERNBox/2021/tree_maker/examples/001_example/study_000/tree.yaml')
-except exception as e:
+except Exception as e:
     print(e)
     print('Probably you forgot to edit the address of you yaml file...')
 
