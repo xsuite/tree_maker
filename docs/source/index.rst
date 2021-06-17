@@ -31,7 +31,6 @@ Documentation contents
     :caption: Reference docs
     :maxdepth: 1
 
-    readme_link
     api
     genindex
 
