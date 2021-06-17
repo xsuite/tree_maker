@@ -34,6 +34,17 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         if children:  # set children only if given
             self.children = children
     
+    def sum_is_five(x, y):
+        '''
+        this is an example function to test wether the pytest is working
+        '''
+        try:
+            z = 5
+            assert x + y == z
+            return True
+        except:
+            return False
+
     def print_it(self):
         '''
         An easy way to print the tree.
