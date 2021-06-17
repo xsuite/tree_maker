@@ -1,5 +1,3 @@
-# tree_maker
-
 ## Introduction
 A beam phycisist (BP) should be as close as possible to the physics of the beam.
 
