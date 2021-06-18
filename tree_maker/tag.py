@@ -1,7 +1,10 @@
 # From  Hamish Graham
 
+import collections
 import ruamel.yaml
 import datetime
+import json
+from collections import OrderedDict
 
 # load the configuration
 def read_yaml(myfile, verbose=False):
@@ -30,6 +33,10 @@ def read_yaml(myfile, verbose=False):
         print(e.__class__)
         return None
 
+def convert_to_dict(input_dict):
+    my_dict = OrderedDict(input_dict)
+    output_dict = json.loads(json.dumps(my_dict))
+    return output_dict
 
 def write_yaml(my_dict, myfile):
     """
