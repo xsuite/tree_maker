@@ -22,29 +22,20 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
                  path=None,
                  template_path=None, 
                  submit_command=None,
-                 dictionary = None):
+                 log_file=None,
+                 dictionary=None):
         super(NodeJobBase, self).__init__()
         self.name = name
         self.parent = parent
         self.path = path
         self.template_path = template_path
         self.submit_command = submit_command
+        self.log_file = log_file
         self.dictionary= dictionary
         
         if children:  # set children only if given
             self.children = children
     
-    def sum_is_five(x, y):
-        '''
-        this is an example function to test wether the pytest is working
-        '''
-        try:
-            z = 5
-            assert x + y == z
-            return True
-        except:
-            return False
-
     def print_it(self):
         '''
         An easy way to print the tree.
@@ -77,6 +68,9 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         #https://stackoverflow.com/questions/7255885/save-dump-a-yaml-file-with-comments-in-pyyaml
         ryaml = ruamel.yaml.YAML()
         
+        self.dictionary['parent'] = self.parent.path
+        self.dictionary['log_file'] = self.log_file
+        
         with open(self.path+'/config.yaml', 'r') as file:
             cfg = ryaml.load(file)
         for ii in self.dictionary.keys():
@@ -92,9 +86,10 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
             ryaml.dump(cfg, file)
                 
     def clean_log(self):
-        my_file = Path(self.dictionary['log_file'])
-        if my_file.is_file():
-            subprocess.call(f'rm  {self.dictionary["log_file"]}', shell=True)
+        if not self.log_file==None:
+            my_file = Path(self.log_file)
+            if my_file.is_file():
+                subprocess.call(f'rm  {self.log_file}', shell=True)
                         
     
     def mutate_children(self):
@@ -112,7 +107,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
                 filter_=lambda node: node.depth==number)]
     
     def _is_logging_file(self):
-        my_file = Path(self.dictionary['log_file'])
+        my_file = Path(self.log_file)
         if my_file.is_file():
             return True
         else:
@@ -120,7 +115,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     
     def has_been(self, tag):
         if self._is_logging_file:
-            my_df= pd.DataFrame(tree_maker.from_yaml(self.dictionary['log_file'])).transpose()
+            my_df= pd.DataFrame(tree_maker.from_yaml(self.log_file)).transpose()
             if tag in my_df['tag'].values:
                 return True
             else:
@@ -132,7 +127,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         return not self.has_been(tag)
         
     def tag_as(self, tag):
-        tree_maker.tag.tag_it(self.dictionary['log_file'], tag)
+        tree_maker.tag.tag_it(self.log_file, tag)
         
     def find(self, **kwargs):
         return anytree.search.findall(self,**kwargs)
@@ -145,8 +140,28 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
 
         self.tag_as('submitted')
         self.submit()
-        
+    
+    def smart_run(self):
+        # if the job has not submitted and
+        # its parent is  root or it has been completed
+        if self.has_not_been('submitted') and \
+            (self.parent.is_root or self.parent.has_been('completed')):
+            self.clean_log()
 
+            self.tag_as('mutated')
+            self.mutate() 
 
+            self.tag_as('submitted')
+            self.submit()
 
+    def sum_is_five(x, y):
+        '''
+        this is an example function to test wether the pytest is working
+        '''
+        try:
+            z = 5
+            assert x + y == z
+            return True
+        except:
+            return False
 

@@ -34,17 +34,12 @@ This package is intended to create the corresponding folders of the "generations
 
 ## Contributors
 
-Philippe Belanger
-
-Gianni Iadarola
-
-Sofia Kostoglou
-
-Hamish Graham
-
-Guido Sterbini
-
-Frederik Van Der Veken
+- Philippe Belanger
+- Gianni Iadarola
+- Sofia Kostoglou
+- Hamish Graham
+- Guido Sterbini
+- Frederik Van Der Veken
 
 ## Getting started
 
