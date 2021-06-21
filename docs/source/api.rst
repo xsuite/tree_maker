@@ -17,4 +17,4 @@ tag.py
 
 NodeJob.py
 ----------
-.. autoclass:: tree_maker.NodeJob.NodeJob
+.. autofunction:: tree_maker.NodeJob.NodeJob.print_it
