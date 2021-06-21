@@ -23,3 +23,9 @@ def test_tag_it():
 	a = tag.read_yaml('example_file.yaml')
 	b = tag.convert_to_dict(a)
 	assert b['1']['tag'] == 'bonjour'
+
+def write_yaml():
+	tag.write_yaml({'green': 'hello'}, ('mytest.yaml'))
+	a = tag.read_yaml('mytest.yaml')
+	b = tag.convert_to_dict(a)
+	assert b == {'green': 'hello'}
