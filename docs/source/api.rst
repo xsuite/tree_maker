@@ -17,5 +17,4 @@ tag.py
 
 NodeJob.py
 ----------
-.. automodule:: tree_maker.NodeJob.NodeJob
-    :members:
+.. autoclass:: tree_maker.NodeJob.NodeJob
