@@ -1,14 +1,16 @@
 import anytree    # pip install anytree 
 import subprocess         
-from shutil import copytree
+from shutil import copytree, copy
 import ruamel.yaml # pip install ruamel.yaml 
 import yaml        # pip install pyyaml 
+import json        # pip install json
 from anytree import AnyNode
-from anytree.exporter import DictExporter
-from anytree.importer import DictImporter
+from anytree.exporter import DictExporter, JsonExporter
+from anytree.importer import DictImporter, JsonImporter
 from pathlib import Path
 import pandas as pd
 import tree_maker
+import os
 
 from anytree import AnyNode, NodeMixin, RenderTree
 class NodeJobBase(object):  # Just an example of a base class
@@ -49,15 +51,16 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     
     def clone(self):
         if not self.template_path==None:
-            copytree(self.template_path, child.path)
+            copytree(self.template_path+'/config.yaml', child.path)
         else:
             subprocess.call(f'mkdir {self.path}', shell=True)
-        self.to_yaml()
+        self.to_json()
     
     def clone_children(self):
         for child in self.children:
-            copytree(child.template_path, child.path)
-            child.to_yaml()
+            os.makedirs(child.path, exist_ok=True)
+            copy(child.template_path+'/config.yaml', child.path+'/config.yaml')
+            child.to_json()
     
     def rm_children_folders(self,):
         for child in self.children:
@@ -102,6 +105,12 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         with open(f"{self.path}/{filename}", "w") as file:  
             yaml.dump(DictExporter().export(self), file)
    
+    def to_json(self, filename='tree.json'): 
+        if not Path(self.path).is_dir():
+            subprocess.call(f'mkdir {self.path}', shell=True)
+        with open(f"{self.path}/{filename}", "w") as file:  
+            json.dump(JsonExporter(indent=2, sort_keys=True).export(self), file)
+    
     def generation(self, number):
         return [ii for ii in anytree.search.findall(self, 
                 filter_=lambda node: node.depth==number)]
@@ -153,15 +162,3 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
 
             self.tag_as('submitted')
             self.submit()
-
-    def sum_is_five(x, y):
-        '''
-        this is an example function to test wether the pytest is working
-        '''
-        try:
-            z = 5
-            assert x + y == z
-            return True
-        except:
-            return False
-
