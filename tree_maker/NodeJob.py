@@ -109,7 +109,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         if not Path(self.path).is_dir():
             subprocess.call(f'mkdir {self.path}', shell=True)
         with open(f"{self.path}/{filename}", "w") as file:  
-            json.dump(JsonExporter(indent=2, sort_keys=True).export(self), file)
+            file.write(JsonExporter(indent=2, sort_keys=True).export(self))
     
     def generation(self, number):
         return [ii for ii in anytree.search.findall(self, 
@@ -125,7 +125,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     def has_been(self, tag):
         if self._is_logging_file():
             my_df= pd.DataFrame(tree_maker.from_yaml(self.log_file)).transpose()
-            if tag in my_df['tag'].values:
+            if (len(my_df)>0) and (tag in my_df['tag'].values):
                 return True
             else:
                 return False
@@ -139,7 +139,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         '''
         This is to tag the node's activity.
         '''
-        tree_maker.tag.tag_it(self.log_file, tag)
+        tree_maker.tag_json.tag_it(self.log_file, tag)
         
     def find(self, **kwargs):
         return anytree.search.findall(self,**kwargs)
