@@ -105,7 +105,7 @@ def tag_it(myfile, mycomment):
         yaml = ruamel.yaml.YAML() 
         my_dict = {stage: {}}
         my_dict[stage]['tag'] = mycomment
-        my_dict[stage]['unix_time'] = str(datetime.datetime.now().timestamp()*1000000000)        #in seconds
+        my_dict[stage]['unix_time'] = int(datetime.datetime.now().timestamp()*1000000000)      #in nanoseconds
         my_dict[stage]['human_time'] = str(datetime.datetime.now())
         yaml.dump(my_dict, file)
 
@@ -127,7 +127,7 @@ def tag_first(myfile, mycomment):
         yaml = ruamel.yaml.YAML() 
         my_dict = {stage: {}}
         my_dict[stage]['tag'] = mycomment
-        my_dict[stage]['unix_time'] = str(datetime.datetime.now().timestamp()*1000000000)        #in seconds
+        my_dict[stage]['unix_time'] = int(datetime.datetime.now().timestamp()*1000000000)        #in seconds
         my_dict[stage]['human_time'] = str(datetime.datetime.now())
         yaml.dump(my_dict, file)
 
