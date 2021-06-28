@@ -136,6 +136,9 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         return not self.has_been(tag)
         
     def tag_as(self, tag):
+        '''
+        This is to tag the node's activity.
+        '''
         tree_maker.tag.tag_it(self.log_file, tag)
         
     def find(self, **kwargs):
