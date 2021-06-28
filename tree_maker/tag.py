@@ -6,6 +6,9 @@ import datetime
 import pytz
 import json
 from collections import OrderedDict
+from time import sleep
+from rich.progress import track
+from rich.progress import Progress
 
 # load the configuration
 def read_yaml(myfile, verbose=False):
@@ -131,3 +134,9 @@ def tag_first(myfile, mycomment):
     with open(myfile, 'w') as file:
         tag(myfile, mycomment, stage, file)
 
+def progress():
+    with Progress() as progress:
+        task1 = progress.add_task("[red]Downloading...", total=1000)
+
+        while not progress.finished:
+            progress.update(task1, completed=100)
