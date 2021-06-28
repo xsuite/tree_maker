@@ -89,6 +89,15 @@ def get_last_stage(myfile, verbose=False):
         print(e.__class__)
         return 0
 
+def tag(myfile, mycomment, stage, file):
+    yaml = ruamel.yaml.YAML() 
+    utc_now = pytz.utc.localize(datetime.datetime.utcnow())
+    pst_now = utc_now.astimezone(pytz.timezone("Europe/Zurich"))
+    my_dict = {stage: {}}
+    my_dict[stage]['tag'] = mycomment
+    my_dict[stage]['unix_time'] = int(datetime.datetime.now().timestamp()*1e9)        #in nanosecond
+    my_dict[stage]['human_time'] = str(pst_now)
+    yaml.dump(my_dict, file)
 
 def tag_it(myfile, mycomment):
     """
@@ -103,14 +112,7 @@ def tag_it(myfile, mycomment):
     """     
     stage = get_last_stage(myfile)
     with open(myfile, 'a') as file:
-        yaml = ruamel.yaml.YAML() 
-        utc_now = pytz.utc.localize(datetime.datetime.utcnow())
-        pst_now = utc_now.astimezone(pytz.timezone("Europe/Zurich"))
-        my_dict = {stage: {}}
-        my_dict[stage]['tag'] = mycomment
-        my_dict[stage]['unix_time'] = int(datetime.datetime.now().timestamp()*1000000000)      #in nanoseconds
-        my_dict[stage]['human_time'] = str(pst_now)
-        yaml.dump(my_dict, file)
+        tag(myfile, mycomment, stage, file)
 
 
 def tag_first(myfile, mycomment):
@@ -127,12 +129,5 @@ def tag_first(myfile, mycomment):
         
     stage = 0
     with open(myfile, 'w') as file:
-        yaml = ruamel.yaml.YAML() 
-        utc_now = pytz.utc.localize(datetime.datetime.utcnow())
-        pst_now = utc_now.astimezone(pytz.timezone("Europe/Zurich"))
-        my_dict = {stage: {}}
-        my_dict[stage]['tag'] = mycomment
-        my_dict[stage]['unix_time'] = int(datetime.datetime.now().timestamp()*1000000000)        #in seconds
-        my_dict[stage]['human_time'] = str(pst_now)
-        yaml.dump(my_dict, file)
+        tag(myfile, mycomment, stage, file)
 
