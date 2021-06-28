@@ -8,5 +8,5 @@ tag.py
 
 NodeJob.py
 ----------
-.. automodule:: tree_maker.NodeJob
+.. automodule:: tree_maker.NodeJob.NodeJob
     :members:
