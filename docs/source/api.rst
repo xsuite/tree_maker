@@ -3,6 +3,9 @@ tree_maker API documentation
 
 tag.py
 ------
+.. automodule:: tree_maker.tag
+    :members:
+|
 .. autofunction:: tree_maker.tag.read_yaml
 |
 .. autofunction:: tree_maker.tag.write_yaml
