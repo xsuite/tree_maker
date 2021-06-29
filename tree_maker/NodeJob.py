@@ -123,14 +123,13 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
             return False
     
     def has_been(self, tag):
-        if self._is_logging_file():
-            my_df= pd.DataFrame(tree_maker.from_yaml(self.log_file)).transpose()
-            if (len(my_df)>0) and (tag in my_df['tag'].values):
-                return True
-            else:
-                return False
+        #if self._is_logging_file():
+        if tag in tree_maker.from_json(self.log_file).keys():
+             return True
         else:
-            return False 
+             return False
+        #else:
+        #    return False 
     
     def has_not_been(self, tag):
         return not self.has_been(tag)

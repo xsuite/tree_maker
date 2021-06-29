@@ -92,10 +92,11 @@ def tag_it(myfile, mycomment):
     This will create a a human readable and a unix time stamp and append that to 'myfile', 
     including the comment 'hello'
     """     
-    stage = get_last_stage(myfile)
-    my_dict = {stage: {}}
-    my_dict[stage]['tag'] = mycomment
+    #stage = get_last_stage(myfile)
+    #my_dict = {stage: {}}
+    #my_dict[stage]['tag'] = mycomment
     my_now=datetime.datetime.now()
-    my_dict[stage]['unix_time'] = int(1e9*my_now.timestamp())        #in nanoseconds
-    my_dict[stage]['human_time'] = str(my_now)
-    append_json(my_dict, myfile)
+    #my_dict[stage]['unix_time'] = int(1e9*my_now.timestamp())        #in nanoseconds
+    #my_dict[stage]['human_time'] = str(my_now)
+    #append_json(my_dict, myfile)
+    append_json({mycomment: int(1e9*my_now.timestamp())}, myfile)

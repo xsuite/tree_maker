@@ -1,0 +1,12 @@
+#initialdir  = . 
+executable  = run.sh
+output      = .output.txt
+error       = .err.txt
+log         = .log.txt
+should_transfer_files   = yes
+when_to_transfer_output = on_exit
+transfer_input_files    = config.yaml, run.py
+# The line below can be commented it necessary
+#transfer_output_files   = output.yaml
++JobFlavour  = "espresso"
+queue

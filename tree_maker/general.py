@@ -5,6 +5,7 @@ from tree_maker import NodeJob
 import yaml # pip install pyyaml 
 import ruamel.yaml
 import json
+import orjson
 
 ryaml = ruamel.yaml.YAML()
 
@@ -14,7 +15,7 @@ def tree_from_yaml(filename='tree.yaml'):
         
 def tree_from_json(filename='tree.json'): 
     with open(filename, "r") as file:
-        return DictImporter(nodecls=NodeJob).import_(json.load(file))
+        return DictImporter(nodecls=NodeJob).import_(orjson.loads(file.read()))
         
 def from_yaml(filename):
     try:
@@ -22,4 +23,12 @@ def from_yaml(filename):
             return ryaml.load(file)
     except Exception as e:
         print(e)
+        return {}
+
+def from_json(filename, verbose=False):
+    try:
+        with open(filename, 'r') as file:
+            return orjson.loads(file.read())
+    except Exception as e:
+        if verbose: print(e)
         return {}
