@@ -93,6 +93,9 @@ def get_last_stage(myfile, verbose=False):
         return 0
 
 def tag(myfile, mycomment, stage, file):
+    """
+    This is repeated in the functions tag_it and tag_first, so to avoid repetition this is a seperate function.
+    """
     yaml = ruamel.yaml.YAML() 
     utc_now = pytz.utc.localize(datetime.datetime.utcnow())
     pst_now = utc_now.astimezone(pytz.timezone("Europe/Zurich"))
@@ -135,6 +138,9 @@ def tag_first(myfile, mycomment):
         tag(myfile, mycomment, stage, file)
 
 def progress():
+    """
+    Template for progressbar.
+    """
     with Progress() as progress:
         task1 = progress.add_task("[red]Downloading...", total=1000)
 
