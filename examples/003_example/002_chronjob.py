@@ -9,13 +9,12 @@ from tree_maker import NodeJob
 
 
 # %%
-# Load the tree from a yaml
 try:
-    root=tree_maker.tree_from_yaml(
-    f'/home/jovyan/local_host_home/CERNBox/2021/tree_maker/examples/001_example/study_000/tree.yaml')
+    root=tree_maker.tree_from_json(
+    f'./study_000/tree.json')
 except Exception as e:
     print(e)
-    print('Probably you forgot to edit the address of you yaml file...')
+    print('Probably you forgot to edit the address of you json file...')
 
 if root.has_been('completed'):
     print('All descendants of root are completed!')
