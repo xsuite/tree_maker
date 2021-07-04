@@ -1,0 +1,5 @@
+# This is my input
+a: -1    # this is the first element of the sum
+b: -1   # this is the second element of the sum
+run_command: 'python run.py'
+log_file: './log.yaml'
