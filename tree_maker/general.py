@@ -37,9 +37,9 @@ def from_json(filename, verbose=False):
         if verbose: print(e)
         return {}
 
-def py_to_yaml(filename):
-    '''Convert the *filename*.py (containg dictionaries) to an
-    equivalent *filename*.yaml'''
-    import filename as my_dict
-    with open(filename+'.yaml', 'w') as fid:
-        yaml.dump(my_dict, fid)
+def config_to_yaml():
+    '''Convert the config.py (containg dictionaries) to an
+    equivalent config.yaml'''
+    import config as my_dict
+    with open('config.yaml', 'w') as fid:
+        yaml.dump(my_dict.configuration, fid)
