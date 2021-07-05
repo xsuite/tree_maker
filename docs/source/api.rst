@@ -4,14 +4,13 @@ tree_maker API documentation
 
 NodeJob.py
 ----------
-.. automodule:: tree_maker.NodeJob
+.. autoclass:: tree_maker.NodeJob.NodeJob
     :members:
 
 tag.py
 ------
 .. automodule:: tree_maker.tag
     :members:
-
 
 repository.py
 ------
