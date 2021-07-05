@@ -1,12 +1,19 @@
 tree_maker API documentation
 ============================
 
+
+NodeJob.py
+----------
+.. autoclass:: tree_maker.NodeJob.NodeJob
+    :members:
+
 tag.py
 ------
 .. automodule:: tree_maker.tag
     :members:
 
-NodeJob.py
-----------
-.. autoclass:: tree_maker.NodeJob.NodeJob
+
+repository.py
+------
+.. automodule:: tree_maker.tag
     :members:
