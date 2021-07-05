@@ -100,6 +100,6 @@ if __name__ == "__main__":
             "folder_name": str(my_base / "tracking-tools/python_installations/tree_maker"),
         },
     ]
-    create_base(my_base, my_list, True)
+    create_base(my_list, True)
     for ii in my_list:
         ii['hash'] = get_hash(ii['folder_name'])
