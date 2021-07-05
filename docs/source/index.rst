@@ -5,9 +5,9 @@ tree_maker
 
 Installation
 ------------
-Using the acc-py Python package index datascout can be pip installed with::
+Using the acc-py Python package index tree_maker can be pip installed with::
 
-    pip install datascout
+    pip install tree_maker
 
 Documentation contents
 ----------------------
@@ -19,7 +19,7 @@ Documentation contents
     self
 
 .. toctree::
-    :caption: datascout
+    :caption: tree_maker
     :maxdepth: 1
 
     usage
