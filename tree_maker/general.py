@@ -10,14 +10,17 @@ import orjson
 ryaml = ruamel.yaml.YAML()
 
 def tree_from_yaml(filename='tree.yaml'): 
+    '''Import the tree structure from the yaml formatted *filename*'''
     with open(filename, "r") as file:
         return DictImporter(nodecls=NodeJob).import_(yaml.load(file, Loader=yaml.FullLoader))
         
 def tree_from_json(filename='tree.json'): 
+    '''Import the tree structure from the json formatted *filename*'''
     with open(filename, "r") as file:
         return DictImporter(nodecls=NodeJob).import_(orjson.loads(file.read()))
         
 def from_yaml(filename):
+    '''Load the *filename* yaml file'''
     try:
         with open(filename, 'r') as file:
             return ryaml.load(file)
@@ -26,9 +29,17 @@ def from_yaml(filename):
         return {}
 
 def from_json(filename, verbose=False):
+    '''Load the *filename* json file'''
     try:
         with open(filename, 'r') as file:
             return orjson.loads(file.read())
     except Exception as e:
         if verbose: print(e)
         return {}
+
+def py_to_yaml(filename):
+    '''Convert the *filename*.py (containg dictionaries) to an
+    equivalent *filename*.yaml'''
+    import filename as my_dict
+    with open(filename+'.yaml', 'w') as fid:
+        yaml.dump(my_dict, fid)
