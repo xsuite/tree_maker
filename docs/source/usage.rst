@@ -3,7 +3,7 @@
 Usage
 =====
 
-A high-level overview of how to use datascout.
+A high-level overview of how to use tree_maker.
 
 An example:
 
