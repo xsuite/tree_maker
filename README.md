@@ -56,3 +56,8 @@ If you are on a Linux machine mounting `afs` or in the Bologna cluster you can s
 ```
 source /afs/cern.ch/eng/tracking-tools/python_installations/activate_default_python
 ```
+
+## Documentation
+
+Teh package documentation can be found at https://acc-py.web.cern.ch/gitlab/abpcomputing/sandbox/tree_maker.
+
