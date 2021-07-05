@@ -1,3 +1,6 @@
+'''
+This package helps to create download a update a list of git repository.
+'''
 # conda env export -n base > environment.yml
 # conda env create --prefix /home/HPC/sterbini/test1 -f environment.yml  
 # import git
@@ -10,12 +13,17 @@ from pathlib import Path
 
 # https://stackoverflow.com/questions/14989858/
 def get_hash(repo):
+    ''' Given the repository path it gives the hash of the present git version.'''
     #os.chdir(str(Path(repo).expanduser()))
     return subprocess.check_output([f'git', '-C', f'{str(Path(repo).expanduser())}',
            'rev-parse', 'HEAD'])[0:-1].decode("utf-8") 
 
 
-def create_base(my_base, my_list, verbose=False):
+def create_base(my_list, verbose=False):
+    '''Given a path a list of dictionary containint the *folder_name* and 
+    the *repo* field (address of the repository) it *git clone* the 
+    the repositories (or *git pull* if already cloned). 
+    '''
     for ii in my_list:
         print(f'**** {ii["repo"]} to {ii["folder_name"]} ****')
         if Path(ii["folder_name"]).is_dir():
