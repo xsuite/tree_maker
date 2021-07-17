@@ -146,11 +146,11 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     def cleanlog_mutate_submit(self):
         self.clean_log()
 
-        self.tag_as('mutated')
         self.mutate() 
+        self.tag_as('mutated')
 
-        self.tag_as('submitted')
         self.submit()
+        self.tag_as('submitted')
     
     def smart_run(self):
         # if the job has not submitted and
@@ -159,8 +159,8 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
             (self.parent.is_root or self.parent.has_been('completed')):
             self.clean_log()
 
-            self.tag_as('mutated')
             self.mutate() 
+            self.tag_as('mutated')
 
-            self.tag_as('submitted')
             self.submit()
+            self.tag_as('submitted')
