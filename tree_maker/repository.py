@@ -44,7 +44,8 @@ def create_base(my_list, verbose=False):
 
 
 if __name__ == "__main__":
-    my_base = Path('~').expanduser() / "base"
+    #my_base = Path('~').expanduser() / "base"
+    my_base = Path('/afs/cern.ch/eng')
     my_list = [
         {
             "repo": "http://github.com/lhcopt/lhcmask",
