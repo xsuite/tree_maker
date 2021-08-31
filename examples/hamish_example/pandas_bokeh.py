@@ -3,7 +3,7 @@ import tree_maker as tm
 from pandas import DataFrame
 
 from bokeh.layouts import column
-from bokeh.models import ColumnDataSource, Slider, WheelZoomTool, BoxZoomTool, Button
+from bokeh.models import ColumnDataSource, Slider, WheelZoomTool, BoxZoomTool, Button, PanTool
 from bokeh.plotting import figure
 from bokeh.themes import Theme
 from bokeh.io import show, output_notebook
@@ -12,7 +12,10 @@ output_notebook()
 
 #root = tm.tree_from_json(filename='/home/HPC/sterbini/DA_study_example/study_000/tree.json')
 
-def bkapp(doc):
+def bkapp(doc, root, last_key, choose_color):
+    """
+    This creates an interactive plot showing a tree of jobs in a 'flower' shape.
+    """
     global my_df
     global source
     
@@ -29,12 +32,6 @@ def bkapp(doc):
     
     del my_df['handle']
     
-    source = ColumnDataSource(data=my_df)
-
-    plot = figure(plot_width=400, plot_height=400, tools="lasso_select", title="Select Here")
-    plot.circle('x', 'y', source=source, alpha=0.6, color = 'color')
-    plot.add_tools(BoxZoomTool())
-    
     def callback(attr, index_list, _):
         global my_df
         global my_df_selected
@@ -43,8 +40,21 @@ def bkapp(doc):
 
     def dummyfunction():
         global my_df
-        my_df = ps.update(my_df, 'completed', 'green')
-
+        my_df = ps.update(my_df, last_key, choose_color)
+    
+    dummyfunction()
+    
+    source = ColumnDataSource(data=my_df)
+    
+    TOOLTIPS = [
+    ('index', "@index"),
+    ('status', "@status"),
+    ('path', "@path")
+]
+    plot = figure(plot_width=400, plot_height=400, tools="lasso_select", title="Select Here", tooltips = TOOLTIPS)
+    plot.circle('x', 'y', source=source, alpha=0.6, color = 'color')
+    plot.add_tools(BoxZoomTool(), WheelZoomTool(), PanTool())
+    
     source.selected.on_change('indices', callback)
     button = Button(label="Update", button_type="success")
 
@@ -52,4 +62,3 @@ def bkapp(doc):
 
     doc.add_root(column(plot, button))
     
-show(bkapp, notebook_url='http://localhost:8102', port=8202) # notebook_url="http://localhost:8888"
