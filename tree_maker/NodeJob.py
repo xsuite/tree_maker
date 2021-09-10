@@ -24,7 +24,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
                  path=None,
                  template_path=None, 
                  submit_command=None,
-                 log_file=None,
+                 log_file='log.json',
                  dictionary=None):
         super(NodeJobBase, self).__init__()
         self.name = name
@@ -38,6 +38,14 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         if children:  # set children only if given
             self.children = children
     
+   
+    def get_abs(self, attribute):
+        if attribute == 'path':
+            return f"{self.root.dictionary['abs_path']}/{getattr(self, attribute)}"  
+        else:
+            return f"{self.root.dictionary['abs_path']}/{self.path}/{getattr(self, attribute)}"  
+ 
+ 
     def print_it(self):
         '''
         An easy way to print the tree.
@@ -46,26 +54,26 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
             print(f"{pre}{node.name}")
     
     def submit(self):
-        subprocess.call(f'cd {self.path};{self.submit_command}', shell=True)
+        subprocess.call(f'cd {self.get_abs("path")};{self.submit_command}', shell=True)
     
     
     def clone(self):
         if not self.template_path==None:
-            copytree(self.template_path+'/config.yaml', child.path)
+            copytree(self.get_abs(template_path)+'/config.yaml', child.get_abs('path'))
         else:
-            subprocess.call(f'mkdir {self.path}', shell=True)
-        self.to_json()
+            subprocess.call(f'mkdir {self.get_abs(template_path)}', shell=True)
+        #self.to_json()
     
     def clone_children(self):
         for child in self.children:
-            os.makedirs(child.path, exist_ok=True)
-            copy(child.template_path+'/config.yaml', child.path+'/config.yaml')
-            child.to_json()
+            os.makedirs(child.get_abs('path'), exist_ok=True)
+            copy(child.get_abs('template_path')+'/config.yaml', child.get_abs('path')+'/config.yaml')
+            #child.to_json()
     
     def rm_children_folders(self,):
         for child in self.children:
             # https://stackoverflow.com/questions/31977833/rm-all-files-under-a-directory-using-python-subprocess-call
-            subprocess.call(f'rm -rf {child.path}', shell=True)
+            subprocess.call(f'rm -rf {child.get_abs("path")}', shell=True)
                         
     def mutate(self):
         #https://stackoverflow.com/questions/7255885/save-dump-a-yaml-file-with-comments-in-pyyaml
@@ -74,7 +82,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         self.dictionary['parent'] = self.parent.path
         self.dictionary['log_file'] = self.log_file
         
-        with open(self.path+'/config.yaml', 'r') as file:
+        with open(self.get_abs('path')+'/config.yaml', 'r') as file:
             cfg = ryaml.load(file)
         for ii in self.dictionary.keys():
             if not type(self.dictionary[ii])==dict:
@@ -85,7 +93,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
                 # TODO: this works only for 1-depth dict
                 cfg[ii]={**cfg[ii], **self.dictionary[ii]}
     
-        with open(self.path+'/config.yaml', 'w') as file:
+        with open(self.get_abs('path')+'/config.yaml', 'w') as file:
             ryaml.dump(cfg, file)
                 
     def clean_log(self):
@@ -98,17 +106,20 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     def mutate_children(self):
         for child in self.children:
             child.mutate()
+            child.tag_as('mutated')
     
     def to_yaml(self, filename='tree.yaml'): 
-        if not Path(self.path).is_dir():
-            subprocess.call(f'mkdir {self.path}', shell=True)
-        with open(f"{self.path}/{filename}", "w") as file:  
+        path = self.get_abs('path')
+        if not Path(path).is_dir():
+            subprocess.call(f'mkdir {path}', shell=True)
+        with open(f"{path}/{filename}", "w") as file:  
             yaml.dump(DictExporter().export(self), file)
    
     def to_json(self, filename='tree.json'): 
-        if not Path(self.path).is_dir():
-            subprocess.call(f'mkdir {self.path}', shell=True)
-        with open(f"{self.path}/{filename}", "w") as file:  
+        path = self.get_abs('path')
+        if not Path(path).is_dir():
+            subprocess.call(f'mkdir {path}', shell=True)
+        with open(f"{path}/{filename}", "w") as file:  
             file.write(JsonExporter(indent=2, sort_keys=True).export(self))
     
     def generation(self, number):
@@ -124,7 +135,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     
     def has_been(self, tag):
         #if self._is_logging_file():
-        if tag in tree_maker.from_json(self.log_file).keys():
+        if tag in tree_maker.from_json(self.get_abs('path')+'/'+self.log_file).keys():
              return True
         else:
              return False
@@ -138,7 +149,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         '''
         This is to tag the node's activity.
         '''
-        tree_maker.tag_json.tag_it(self.log_file, tag)
+        tree_maker.tag_json.tag_it(self.get_abs('path')+'/'+self.log_file, tag)
         
     def find(self, **kwargs):
         return anytree.search.findall(self,**kwargs)
