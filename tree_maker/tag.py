@@ -7,9 +7,7 @@ import pytz
 import json
 from collections import OrderedDict
 from time import sleep
-import rich
-from rich.progress import track
-from rich.progress import Progress
+
 
 # load the configuration
 def read_yaml(myfile, verbose=False):
