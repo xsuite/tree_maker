@@ -18,5 +18,5 @@ pandas_skeleton.py
 
 monitoring_sim.py
 -----------------
-.. automodule:: tree_maker.monitoring_sim
+.. automodule:: tree_maker.monitoring_sim.bkapp
     :members:
