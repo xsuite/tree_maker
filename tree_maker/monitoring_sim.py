@@ -1,5 +1,6 @@
-import pandas_skeleton as ps
+#import pandas_skeleton as ps
 import tree_maker as tm
+ps = tm.pandas_skeleton
 from pandas import DataFrame
 
 from bokeh.layouts import column
