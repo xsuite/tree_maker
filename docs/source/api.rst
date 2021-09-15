@@ -13,10 +13,10 @@ NodeJob.py
 
 pandas_skeleton.py
 -----------------
-.. autoclass:: examples.hamish_example.pandas_skeleton
+.. autoclass:: tree_maker.pandas_skeleton
     :members:
 
 monitoring_sim.py
 -----------------
-.. autoclass:: examples.hamish_example.monitoring_sim
+.. autoclass:: tree_maker.monitoring_sim
     :members:
