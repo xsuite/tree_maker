@@ -1,6 +1,13 @@
 # From  Hamish Graham
+
+import collections
 import ruamel.yaml
 import datetime
+import pytz
+import json
+from collections import OrderedDict
+from time import sleep
+
 
 # load the configuration
 def read_yaml(myfile, verbose=False):
@@ -29,6 +36,10 @@ def read_yaml(myfile, verbose=False):
         print(e.__class__)
         return None
 
+def convert_to_dict(input_dict):
+    my_dict = OrderedDict(input_dict)
+    output_dict = json.loads(json.dumps(my_dict))
+    return output_dict
 
 def write_yaml(my_dict, myfile):
     """
@@ -76,10 +87,22 @@ def get_last_stage(myfile, verbose=False):
     except IndexError:
         if verbose: print('IndexError, I consider 0 as first item')
         return 0
-    except Exception as e: 
+    except Exception as e:
         print(e.__class__)
         return 0
 
+def tag(myfile, mycomment, stage, file):
+    """
+    This is repeated in the functions tag_it and tag_first, so to avoid repetition this is a seperate function.
+    """
+    yaml = ruamel.yaml.YAML() 
+    utc_now = pytz.utc.localize(datetime.datetime.utcnow())
+    pst_now = utc_now.astimezone(pytz.timezone("Europe/Zurich"))
+    my_dict = {stage: {}}
+    my_dict[stage]['tag'] = mycomment
+    my_dict[stage]['unix_time'] = int(datetime.datetime.now().timestamp()*1e9)        #in nanosecond
+    my_dict[stage]['human_time'] = str(pst_now)
+    yaml.dump(my_dict, file)
 
 def tag_it(myfile, mycomment):
     """
@@ -94,12 +117,7 @@ def tag_it(myfile, mycomment):
     """     
     stage = get_last_stage(myfile)
     with open(myfile, 'a') as file:
-        yaml = ruamel.yaml.YAML() 
-        my_dict = {stage: {}}
-        my_dict[stage]['tag'] = mycomment
-        my_dict[stage]['unix_time'] = datetime.datetime.now().timestamp()        #in seconds
-        my_dict[stage]['human_time'] = datetime.datetime.now()
-        yaml.dump(my_dict, file)
+        tag(myfile, mycomment, stage, file)
 
 
 def tag_first(myfile, mycomment):
@@ -116,10 +134,14 @@ def tag_first(myfile, mycomment):
         
     stage = 0
     with open(myfile, 'w') as file:
-        yaml = ruamel.yaml.YAML() 
-        my_dict = {stage: {}}
-        my_dict[stage]['tag'] = mycomment
-        my_dict[stage]['unix_time'] = datetime.datetime.now().timestamp()        #in seconds
-        my_dict[stage]['human_time'] = datetime.datetime.now()
-        yaml.dump(my_dict, file)
+        tag(myfile, mycomment, stage, file)
 
+def progress():
+    """
+    Template for progressbar.
+    """
+    with Progress() as progress:
+        task1 = progress.add_task("[red]Downloading...", total=1000)
+
+        while not progress.finished:
+            progress.update(task1, completed=100)
