@@ -57,17 +57,19 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         subprocess.call(f'cd {self.get_abs("path")};{self.submit_command}', shell=True)
     
     
-    def clone(self):
-        if not self.template_path==None:
-            copytree(self.get_abs(template_path)+'/config.yaml', child.get_abs('path'))
-        else:
-            subprocess.call(f'mkdir {self.get_abs(template_path)}', shell=True)
-        #self.to_json()
+    #def clone(self, files=['config.yaml', 'run.sh'] ):
+    #    if not self.template_path==None:
+    #        for my_file in files:
+    #        	copytree(self.get_abs(template_path)+'/'+my_file, child.get_abs('path'))
+    #    else:
+    #        subprocess.call(f'mkdir {self.get_abs(template_path)}', shell=True)
+    #    #self.to_json()
     
-    def clone_children(self):
+    def clone_children(self, files=['config.yaml', 'run.sh']):
         for child in self.children:
             os.makedirs(child.get_abs('path'), exist_ok=True)
-            copy(child.get_abs('template_path')+'/config.yaml', child.get_abs('path')+'/config.yaml')
+            for my_file in files:
+            	copy(child.get_abs('template_path')+'/'+my_file, child.get_abs('path')+'/'+my_file)
             #child.to_json()
     
     def rm_children_folders(self,):
