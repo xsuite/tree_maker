@@ -12,10 +12,8 @@ from .general import tree_from_json
 from .general import from_yaml
 from .general import from_json
 from .general import config_to_yaml
-from .tag import * 
-#from .pandas_skeleton import *
-import pandas_skeleton
-#from .monitoring_sim import *
-import monitoring_sim
+from .tag import *
+#from . import pandas_skeleton
+#from . import monitoring_sim
 
 
