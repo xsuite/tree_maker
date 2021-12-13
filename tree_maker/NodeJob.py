@@ -14,24 +14,48 @@ import os
 
 from anytree import AnyNode, NodeMixin, RenderTree
 
-# https://stackoverflow.com/questions/42497625/
-# how-to-postpone-defer-the-evaluation-of-f-strings
-import inspect
+def get_children(node, node_dict):
+    if 'children' in node_dict[node.name].keys():
+        children_dict = node_dict[node.name]['children'] 
+        for child in children_dict.keys():
+            child_dict = children_dict[child]
+            child_node = NodeJob(name=child,
+                                 parent=node,                                    
+                                 dictionary={x: child_dict[x]
+                                             for x in child_dict.keys()
+                                             if x not in ['children']})
+            get_children(child_node, children_dict)    
 
-class magic_fstring:
-    def __init__(self, payload):
-        self.payload = payload
-    def __str__(self):
-        vars = inspect.currentframe().f_back.f_globals.copy()
-        vars.update(inspect.currentframe().f_back.f_locals)
-        return self.payload.format(**vars)
+
+def initialize(config):
+    #root name
+    r=list(config.keys())[0]
+    #root node
+    root = NodeJob(name=list(config.keys())[0], 
+                   parent=None, 
+                   dictionary={x: config[r][x] for x in config[r].keys() 
+                                               if x not in ['children']})
+    
+    get_children(root, config)
+    
+    root.to_json('tree_maker.json')
+    return root
+
+
+#class magic_fstring:
+#    def __init__(self, payload):
+#        self.payload = payload
+#    def __str__(self):
+#        vars = inspect.currentframe().f_back.f_globals.copy()
+#        vars.update(inspect.currentframe().f_back.f_locals)
+#        return self.payload.format(**vars)
 
 
 # use it inside a function to demonstrate it gets the scoping right
-def new_scope():
-    names = ["foo", "bar"]
-    for name in names:
-        print(template_a) 
+#def new_scope():
+#    names = ["foo", "bar"]
+#    for name in names:
+#        print(template_a) 
 
 
 
@@ -88,7 +112,43 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     #    else:
     #        subprocess.call(f'mkdir {self.get_abs(template_path)}', shell=True)
         #self.to_json()
-    
+ 
+    def write_run_files(self, string_run):
+        if self.root==self:
+            for generation_number in range(self.height):
+                for node in self.generation(generation_number+1):
+                    file_name = node.get_abs_path()+'/run.sh'
+                    with open(file_name, 'w') as fid:
+                        fid.write(string_run(node, generation_number+1))
+                        os.system(f"chmod u+x {file_name}")
+        else:
+            raise ValueError('The node has to be a root node.')
+
+    def clone(self):
+        if self.root==self:
+            self.clean_log()
+            self.rm_children_folders()
+            from joblib import Parallel, delayed
+            
+            for jj,ii in enumerate(self.dictionary['generations']):
+                my_generation = self.dictionary['generations'][ii]
+                if 'files_to_clone' in my_generation.keys():
+                   file_list = my_generation['files_to_clone']
+                else:
+                    file_list = []
+                Parallel(n_jobs=8)(
+                  delayed(x.clone_children)(my_generation['job_folder'],
+    				files=(['config.yaml',
+                                             my_generation['job_executable']]+
+                                             file_list))  
+                           for x in self.generation(jj))
+            # tagging
+            self.tag_as('cloned')
+        else:
+            raise ValueError("The cloning method is allow only" 
+                             "for the root node at the moment.")
+
+   
     def clone_children(self, template_path, files=['config.yaml']):
         for child in self.children:
             os.makedirs(child.get_abs_path(), exist_ok=True)
@@ -101,7 +161,11 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         for child in self.children:
             # https://stackoverflow.com/questions/31977833/rm-all-files-under-a-directory-using-python-subprocess-call
             subprocess.call(f'rm -rf {child.get_abs_path()}', shell=True)
-                        
+    
+    def mutate_descendants(self):
+        for node in self.descendants:
+            node.mutate()  
+                    
     def mutate(self):
         #https://stackoverflow.com/questions/7255885/save-dump-a-yaml-file-with-comments-in-pyyaml
         ryaml = ruamel.yaml.YAML()

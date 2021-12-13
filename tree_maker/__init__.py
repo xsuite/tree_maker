@@ -6,7 +6,7 @@ list of sweet functions for data conversion and writing to disk
 __version__ = "0.0.1"
 
 from .NodeJob import NodeJob
-from .NodeJob import magic_fstring
+from .NodeJob import initialize
 
 from .general import tree_from_yaml
 from .general import tree_from_json
