@@ -21,11 +21,22 @@ def get_children(node, node_dict):
             child_dict = children_dict[child]
             child_node = NodeJob(name=child,
                                  parent=node,                                    
-                                 dictionary={x: child_dict[x]
+                                 parameters={x: child_dict[x]
                                              for x in child_dict.keys()
                                              if x not in ['children']})
             get_children(child_node, children_dict)    
 
+
+def _get_status(input_dict):
+    """
+    Returns last key, the status of the job, from 'log_file'.
+    Incase of an empty log_file, 'None' is returned.
+    """        
+    keys=list(input_dict)
+    if len(keys) > 0:
+        return keys[-1]
+    else:
+        return None 
 
 def initialize(config):
     #root name
@@ -33,7 +44,7 @@ def initialize(config):
     #root node
     root = NodeJob(name=list(config.keys())[0], 
                    parent=None, 
-                   dictionary={x: config[r][x] for x in config[r].keys() 
+                   parameters={x: config[r][x] for x in config[r].keys() 
                                                if x not in ['children']})
     
     get_children(root, config)
@@ -71,7 +82,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
                  #template_path=None, 
                  #submit_command=None,
                  #log='log.json',
-                 dictionary=None):
+                 parameters=None):
         super(NodeJobBase, self).__init__()
         self.name = name
         self.parent = parent
@@ -79,11 +90,10 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         #self.template_path = template_path
         #self.submit_command = submit_command
         #self.log = log
-        self.dictionary= dictionary
+        self.parameters= parameters
         
         if children:  # set children only if given
             self.children = children
-    
    
     def get_abs_path(self):
         if self.parent == None:
@@ -130,8 +140,8 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
             self.rm_children_folders()
             from joblib import Parallel, delayed
             
-            for jj,ii in enumerate(self.dictionary['generations']):
-                my_generation = self.dictionary['generations'][ii]
+            for jj,ii in enumerate(self.parameters['generations']):
+                my_generation = self.parameters['generations'][ii]
                 if 'files_to_clone' in my_generation.keys():
                    file_list = my_generation['files_to_clone']
                 else:
@@ -156,6 +166,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
                 copy(template_path + f'/{my_file}', 
                      child.get_abs_path()+f'/{my_file}')
             child.to_json()
+            child.tag_as('cloned')
     
     def rm_children_folders(self,):
         for child in self.children:
@@ -165,24 +176,25 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     def mutate_descendants(self):
         for node in self.descendants:
             node.mutate()  
+            node.tag_as('mutated')
                     
     def mutate(self):
         #https://stackoverflow.com/questions/7255885/save-dump-a-yaml-file-with-comments-in-pyyaml
         ryaml = ruamel.yaml.YAML()
         
-        #self.dictionary['parent'] = self.parent.path
-        #self.dictionary['log'] = self.log
+        #self.parameters['parent'] = self.parent.path
+        #self.parameters['log'] = self.log
         
         with open(self.get_abs_path()+'/config.yaml', 'r') as file:
             cfg = ryaml.load(file)
-        for ii in self.dictionary.keys():
-            if not type(self.dictionary[ii])==dict:
+        for ii in self.parameters.keys():
+            if not type(self.parameters[ii])==dict:
                 # most of case
-                cfg[ii]=self.dictionary[ii]
+                cfg[ii]=self.parameters[ii]
             else:
                 # proper partial merging between dict
                 # TODO: this works only for 1-depth dict
-                cfg[ii]={**cfg[ii], **self.dictionary[ii]}
+                cfg[ii]={**cfg[ii], **self.parameters[ii]}
     
         with open(self.get_abs_path()+'/config.yaml', 'w') as file:
             ryaml.dump(cfg, file)
@@ -194,10 +206,10 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
             subprocess.call(f'rm  {self.get_abs_path()}/tree_maker.log', shell=True)
                         
     
-    def mutate_children(self):
-        for child in self.children:
-            child.mutate()
-            child.tag_as('mutated')
+    #def mutate_children(self):
+    #    for child in self.children:
+    #        child.mutate()
+    #        child.tag_as('mutated')
     
     #def to_yaml(self, filename='tree.yaml'): 
     #    path = self.get_abs('path')
@@ -269,3 +281,37 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
     #
     #        self.submit()
     #        self.tag_as('submitted')
+    
+    def _log_dict(node):
+        return tree_maker.from_json(node.get_abs_path()
+                                    + '/tree_maker.log')
+    
+    def _get_status(keys):
+        """
+        Returns last key, the status of the job, from 'log_file'.
+        Incase of an empty log_file, 'None' is returned.
+	"""        
+        if len(keys) > 0:
+            return keys[-1]
+        else:
+            return None 
+
+    def make_folders(self, generate_run_sh):
+        self.clone()
+        self.mutate_descendants()    
+        self.write_run_files(generate_run_sh)  
+
+    def get_df(self):
+        """
+        Creating a dataframe and its attributes. 
+        """
+        my_df = pd.DataFrame([self]+list(self.descendants),
+                             columns=['handle']).copy()
+        my_df['name'] = my_df['handle'].apply(lambda x:x.name)
+        my_df['path'] = my_df['handle'].apply(lambda x:x.get_abs_path())
+        my_df['log'] = my_df['handle'].apply(lambda x:x._log_dict())
+        my_df['status'] = my_df['log'].apply(lambda x:_get_status(x))
+        my_df['height'] = my_df['handle'].apply(lambda x:x.depth)
+        my_df = my_df.set_index('path')
+        my_df.index.name = None
+        return my_df
