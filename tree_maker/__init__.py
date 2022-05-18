@@ -13,9 +13,10 @@ from .general import tree_from_json
 from .general import from_yaml
 from .general import from_json
 from .general import config_to_yaml
-from .tag import * 
-from .tag_json import * 
-
+from .tag import *
+from .tag_json import *
+from .lsf import *
+from .local_pc import *
 
 
 
