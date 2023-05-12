@@ -114,6 +114,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         # submit_command=None,
         # log='log.json',
         parameters=None,
+        suffix=None,
     ):
         super(NodeJobBase, self).__init__()
         self.name = name
@@ -123,7 +124,7 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         # self.submit_command = submit_command
         # self.log = log
         self.parameters = parameters
-
+        self.suffix = suffix
         if children:  # set children only if given
             self.children = children
 
@@ -131,14 +132,16 @@ class NodeJob(NodeJobBase, NodeMixin):  # Add Node feature
         self.suffix = suffix
 
     def get_abs_path(self):
-        # Add an empty suffix if needed
-        if not hasattr(self, "suffix"):
-            self.suffix = ""
+        # Get proper suffix
+        if self.suffix == None:
+            suffix = ""
+        else:
+            suffix = self.suffix
 
         if self.parent == None:
-            return str(Path(".").absolute()) + self.suffix
+            return str(Path(".").absolute()) + suffix
         else:
-            return f"{self.parent.get_abs_path()}" + self.suffix + f"/{self.name}"
+            return f"{self.parent.get_abs_path()}" + suffix + f"/{self.name}"
         # else:
         #    return f"{self.parent.path}/{self.path}/{getattr(self, attribute)}"
 
