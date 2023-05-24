@@ -18,7 +18,7 @@ from anytree import AnyNode, NodeMixin, RenderTree
 from functools import reduce
 
 
-# ! I added this function to allow merge for depth>1 (Colas)
+# Function to allow merge for depth>1 
 def merge(a, b, path=None):
     "merges b into a"
     if path is None:
