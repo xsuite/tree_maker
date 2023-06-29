@@ -47,7 +47,7 @@ This package is intended to create the corresponding folders of the "generations
 
 First you need to install this package in your (virtual) environment. Presently, the suggested way is to go for local folder installation:
 ```
-git clone https://gitlab.cern.ch/abpcomputing/sandbox/tree_maker.git
+git clone git@github.com:xsuite/tree_maker.git
 cd tree_maker
 python -m pip install -e .
 ```
